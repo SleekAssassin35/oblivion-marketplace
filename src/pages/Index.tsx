@@ -146,6 +146,8 @@ const Index = () => {
           <div className="text-center text-gray-400 mb-6">
             {paymentMethod === "usdt" ? (
               <p>USDT ile Ödeme</p>
+            ) : (
+              <p>IBAN ile Ödeme</p>
             )}
           </div>
           <Button 
