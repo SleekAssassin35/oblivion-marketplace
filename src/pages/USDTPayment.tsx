@@ -22,7 +22,7 @@ const USDTPayment = () => {
     <div 
       className="min-h-screen bg-cover bg-center bg-fixed text-white p-6"
       style={{
-        backgroundImage: "url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=2000&q=80')",
+        backgroundImage: "url('https://s3.tradingview.com/userpics/6171439-thumb.png')",
         backgroundBlendMode: "overlay",
         backgroundColor: "rgba(0, 0, 0, 0.8)",
       }}
@@ -43,7 +43,7 @@ const USDTPayment = () => {
           transition={{ duration: 0.5 }}
           className="space-y-6"
         >
-          <Card className="glass-morphism text-white">
+          <Card className="bg-gradient-to-br from-oblivion-black/90 to-oblivion-purple/20 backdrop-blur-xl border border-white/10 text-white">
             <CardHeader>
               <CardTitle className="text-2xl text-center bg-clip-text text-transparent bg-gradient-to-r from-oblivion-pink to-oblivion-purple">
                 USDT Ödeme Bilgileri
@@ -51,7 +51,7 @@ const USDTPayment = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="relative">
-                <div className="p-4 rounded-lg bg-black/20 border border-white/10">
+                <div className="p-4 rounded-lg bg-black/40 border border-white/10">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-300">USDT Wallet Address:</span>
                     <Button
@@ -69,7 +69,7 @@ const USDTPayment = () => {
             </CardContent>
           </Card>
 
-          <Card className="glass-morphism text-white">
+          <Card className="bg-gradient-to-br from-oblivion-black/90 to-oblivion-purple/20 backdrop-blur-xl border border-white/10 text-white">
             <CardHeader>
               <CardTitle className="text-2xl text-center bg-clip-text text-transparent bg-gradient-to-r from-oblivion-pink to-oblivion-purple">
                 Ödeme Sonrası Adımlar
@@ -83,6 +83,34 @@ const USDTPayment = () => {
                 <li>Hash bilgisini destek ekibimize iletin</li>
                 <li>Ürün erişimi 24 saat içinde sağlanacaktır</li>
               </ol>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-oblivion-black/90 to-oblivion-purple/20 backdrop-blur-xl border border-white/10 text-white">
+            <CardHeader>
+              <CardTitle className="text-2xl text-center bg-clip-text text-transparent bg-gradient-to-r from-oblivion-pink to-oblivion-purple">
+                İletişim Kanalları
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 rounded-lg bg-black/40 border border-white/10">
+                  <h3 className="font-semibold mb-2 text-oblivion-pink">Telegram</h3>
+                  <p className="text-sm text-gray-300">@your_telegram</p>
+                </div>
+                <div className="p-4 rounded-lg bg-black/40 border border-white/10">
+                  <h3 className="font-semibold mb-2 text-oblivion-pink">Discord</h3>
+                  <p className="text-sm text-gray-300">your_discord</p>
+                </div>
+                <div className="p-4 rounded-lg bg-black/40 border border-white/10">
+                  <h3 className="font-semibold mb-2 text-oblivion-pink">Skype</h3>
+                  <p className="text-sm text-gray-300">your_skype</p>
+                </div>
+                <div className="p-4 rounded-lg bg-black/40 border border-white/10">
+                  <h3 className="font-semibold mb-2 text-oblivion-pink">YouTube</h3>
+                  <p className="text-sm text-gray-300">your_youtube</p>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </motion.div>
