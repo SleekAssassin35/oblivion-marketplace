@@ -20,9 +20,11 @@ const USDTPayment = () => {
 
   return (
     <div 
-      className="min-h-screen bg-cover bg-center bg-no-repeat bg-fixed p-6"
+      className="min-h-screen bg-cover bg-center bg-fixed text-white p-6"
       style={{
-        background: `linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url('/crypto-bg.jpg')`,
+        backgroundImage: "url('https://s3.tradingview.com/userpics/6171439-thumb.png')",
+        backgroundBlendMode: "overlay",
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
       }}
     >
       <Button 
@@ -41,9 +43,9 @@ const USDTPayment = () => {
           transition={{ duration: 0.5 }}
           className="space-y-6"
         >
-          <Card className="bg-gradient-to-br from-[#1A1F2C]/90 to-[#9b87f5]/20 backdrop-blur-xl border border-white/10 text-white">
+          <Card className="bg-gradient-to-br from-oblivion-black/90 to-oblivion-purple/20 backdrop-blur-xl border border-white/10 text-white">
             <CardHeader>
-              <CardTitle className="text-2xl text-center bg-clip-text text-transparent bg-gradient-to-r from-[#9b87f5] to-[#1A1F2C]">
+              <CardTitle className="text-2xl text-center bg-clip-text text-transparent bg-gradient-to-r from-oblivion-pink to-oblivion-purple">
                 USDT Ödeme Bilgileri
               </CardTitle>
             </CardHeader>
@@ -55,7 +57,7 @@ const USDTPayment = () => {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="text-[#9b87f5] hover:text-[#1A1F2C]"
+                      className="text-oblivion-pink hover:text-oblivion-purple"
                       onClick={() => handleCopy("YOUR_USDT_WALLET_ADDRESS")}
                     >
                       <CopyIcon className="h-4 w-4" />
@@ -67,9 +69,9 @@ const USDTPayment = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-[#1A1F2C]/90 to-[#9b87f5]/20 backdrop-blur-xl border border-white/10 text-white">
+          <Card className="bg-gradient-to-br from-oblivion-black/90 to-oblivion-purple/20 backdrop-blur-xl border border-white/10 text-white">
             <CardHeader>
-              <CardTitle className="text-2xl text-center bg-clip-text text-transparent bg-gradient-to-r from-[#9b87f5] to-[#1A1F2C]">
+              <CardTitle className="text-2xl text-center bg-clip-text text-transparent bg-gradient-to-r from-oblivion-pink to-oblivion-purple">
                 Ödeme Sonrası Adımlar
               </CardTitle>
             </CardHeader>
@@ -84,28 +86,28 @@ const USDTPayment = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-[#1A1F2C]/90 to-[#9b87f5]/20 backdrop-blur-xl border border-white/10 text-white">
+          <Card className="bg-gradient-to-br from-oblivion-black/90 to-oblivion-purple/20 backdrop-blur-xl border border-white/10 text-white">
             <CardHeader>
-              <CardTitle className="text-2xl text-center bg-clip-text text-transparent bg-gradient-to-r from-[#9b87f5] to-[#1A1F2C]">
+              <CardTitle className="text-2xl text-center bg-clip-text text-transparent bg-gradient-to-r from-oblivion-pink to-oblivion-purple">
                 İletişim Kanalları
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 rounded-lg bg-black/40 border border-white/10">
-                  <h3 className="font-semibold mb-2 text-[#9b87f5]">Telegram</h3>
+                  <h3 className="font-semibold mb-2 text-oblivion-pink">Telegram</h3>
                   <p className="text-sm text-gray-300">@your_telegram</p>
                 </div>
                 <div className="p-4 rounded-lg bg-black/40 border border-white/10">
-                  <h3 className="font-semibold mb-2 text-[#9b87f5]">Discord</h3>
+                  <h3 className="font-semibold mb-2 text-oblivion-pink">Discord</h3>
                   <p className="text-sm text-gray-300">your_discord</p>
                 </div>
                 <div className="p-4 rounded-lg bg-black/40 border border-white/10">
-                  <h3 className="font-semibold mb-2 text-[#9b87f5]">Skype</h3>
+                  <h3 className="font-semibold mb-2 text-oblivion-pink">Skype</h3>
                   <p className="text-sm text-gray-300">your_skype</p>
                 </div>
                 <div className="p-4 rounded-lg bg-black/40 border border-white/10">
-                  <h3 className="font-semibold mb-2 text-[#9b87f5]">YouTube</h3>
+                  <h3 className="font-semibold mb-2 text-oblivion-pink">YouTube</h3>
                   <p className="text-sm text-gray-300">your_youtube</p>
                 </div>
               </div>
