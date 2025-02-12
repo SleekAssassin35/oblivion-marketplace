@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import CryptoTicker from "@/components/CryptoTicker";
 import { Button } from "@/components/ui/button";
@@ -8,9 +7,19 @@ import {
   ChatBubbleIcon,
 } from "@radix-ui/react-icons";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   const [paymentMethod, setPaymentMethod] = useState<"usdt" | "tron">("usdt");
+  const navigate = useNavigate();
+
+  const handlePayment = () => {
+    if (paymentMethod === "usdt") {
+      navigate("/payment/usdt");
+    } else {
+      navigate("/payment/iban");
+    }
+  };
 
   return (
     <div 
@@ -131,18 +140,21 @@ const Index = () => {
               }`}
               onClick={() => setPaymentMethod("tron")}
             >
-              TRON
+              IBAN
             </Button>
           </div>
           <div className="text-center text-gray-400 mb-6">
             {paymentMethod === "usdt" ? (
-              <p>USDT Ödeme Adresi</p>
+              <p>USDT ile Ödeme</p>
             ) : (
-              <p>TRON Ödeme Adresi</p>
+              <p>IBAN ile Ödeme</p>
             )}
           </div>
-          <Button className="w-full bg-gradient-to-r from-oblivion-pink to-oblivion-purple hover:opacity-90 transition-opacity">
-            Satın Al
+          <Button 
+            onClick={handlePayment}
+            className="w-full bg-gradient-to-r from-oblivion-pink to-oblivion-purple hover:opacity-90 transition-opacity"
+          >
+            Ödemeye Geç
           </Button>
         </motion.div>
       </section>
