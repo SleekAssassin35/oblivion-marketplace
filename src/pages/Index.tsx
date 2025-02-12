@@ -87,7 +87,7 @@ const Index = () => {
                 icon: "📈"
               },
               {
-                title: "7/24 Destek",
+                title: "7/244 Destek",
                 description: "Profesyonel destek ekibi ile kesintisiz yardım",
                 icon: "🔧"
               }
