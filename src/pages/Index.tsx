@@ -87,7 +87,7 @@ const Index = () => {
                 icon: "📈"
               },
               {
-                title: "7/244 Destek",
+                title: "7/24 Destek",
                 description: "Profesyonel destek ekibi ile kesintisiz yardım",
                 icon: "🔧"
               }
@@ -147,7 +147,7 @@ const Index = () => {
             {paymentMethod === "usdt" ? (
               <p>USDT ile Ödeme</p>
             ) : (
-              <p>IBAN ile Ödeme</p>
+              //<p>IBAN ile Ödeme</p>//
             )}
           </div>
           <Button 
