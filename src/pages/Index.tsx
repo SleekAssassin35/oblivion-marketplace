@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import CryptoTicker from "@/components/CryptoTicker";
 import { Button } from "@/components/ui/button";
@@ -7,7 +6,7 @@ import {
   TwitterLogoIcon,
   ChatBubbleIcon,
 } from "@radix-ui/react-icons";
-import { Skype, Youtube } from "lucide-react";
+import { MessageCircle, Youtube } from "lucide-react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
@@ -238,7 +237,7 @@ const Index = () => {
             href="YOUR_SKYPE_URL"
             className="text-gray-400 hover:text-oblivion-purple transition-colors"
           >
-            <Skype className="w-6 h-6" />
+            <MessageCircle className="w-6 h-6" />
           </motion.a>
           <motion.a
             whileHover={{ scale: 1.1 }}
@@ -254,4 +253,3 @@ const Index = () => {
 };
 
 export default Index;
-
