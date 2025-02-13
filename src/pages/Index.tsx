@@ -6,7 +6,7 @@ import {
   TwitterLogoIcon,
   ChatBubbleIcon,
 } from "@radix-ui/react-icons";
-import { MessageCircle, Youtube } from "lucide-react";
+import { MessageCircle, Youtube, BarChart3 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
@@ -42,6 +42,9 @@ const Index = () => {
       description: "Kripto piyasalarında profesyonel al-sat sinyalleri ile kazançlarınızı maksimize edin. Yapay zeka destekli analizler ve gerçek zamanlı uyarılarla piyasanın bir adım önünde olun.",
       buyButton: "Satın Al",
       watchLive: "Canlı Al Satı İzle",
+      userReviews: "Kullanıcı Yorumları",
+      faqTitle: "Sıkça Sorulan Sorular",
+      metricsButton: "Metrikler",
       features: [
         {
           title: "Yapay Zeka Analizi",
@@ -115,6 +118,9 @@ const Index = () => {
       description: "Maximize your profits in crypto markets with professional buy-sell signals. Stay ahead of the market with AI-powered analysis and real-time alerts.",
       buyButton: "Buy Now",
       watchLive: "Watch Live Trading",
+      userReviews: "User Reviews",
+      faqTitle: "FAQ",
+      metricsButton: "Metrics",
       features: [
         {
           title: "AI Analysis",
@@ -188,6 +194,9 @@ const Index = () => {
       description: "Maximiza tus ganancias en los mercados de criptomonedas con señales profesionales de compra-venta. Mantente adelante del mercado con análisis impulsado por IA y alertas en tiempo real.",
       buyButton: "Comprar Ahora",
       watchLive: "Ver Trading en Vivo",
+      userReviews: "Reseñas de Usuarios",
+      faqTitle: "Preguntas Frecuentes",
+      metricsButton: "Métricas",
       features: [
         {
           title: "Análisis de IA",
@@ -266,6 +275,17 @@ const Index = () => {
         backgroundColor: "rgba(0, 0, 0, 0.8)",
       }}
     >
+      <div className="fixed top-4 right-4 z-50">
+        <Button
+          onClick={() => setShowLanguageModal(true)}
+          variant="outline"
+          size="sm"
+          className="bg-black/50 text-white border-white/20 hover:bg-black/70"
+        >
+          Language
+        </Button>
+      </div>
+
       <Dialog open={showLanguageModal} onOpenChange={setShowLanguageModal}>
         <DialogContent className="bg-black/90 border-oblivion-purple">
           <DialogHeader>
@@ -296,7 +316,6 @@ const Index = () => {
 
       <CryptoTicker />
       
-      {/* Hero Section */}
       <section className="container mx-auto py-20 text-center relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -315,6 +334,13 @@ const Index = () => {
           </p>
           <div className="flex justify-center gap-4">
             <Button 
+              onClick={() => navigate("/metrics")}
+              className="bg-gradient-to-r from-oblivion-purple to-oblivion-lightPink hover:opacity-90 transition-all duration-300 transform hover:scale-105"
+            >
+              <BarChart3 className="w-4 h-4 mr-2" />
+              {translations[language].metricsButton}
+            </Button>
+            <Button 
               onClick={() => navigate("/payment/usdt")}
               className="bg-gradient-to-r from-oblivion-pink to-oblivion-purple hover:opacity-90 transition-all duration-300 transform hover:scale-105"
             >
@@ -330,7 +356,6 @@ const Index = () => {
         </motion.div>
       </section>
 
-      {/* Features Section */}
       <section className="container mx-auto py-20">
         <div className="max-h-[600px] overflow-y-auto custom-scrollbar">
           <div className="grid md:grid-cols-3 gap-8 p-4">
@@ -353,10 +378,9 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Reviews Section */}
       <section className="container mx-auto py-20">
         <h2 className="text-4xl font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-oblivion-pink to-oblivion-purple">
-          User Reviews
+          {translations[language].userReviews}
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
           {translations[language].reviews.map((review, index) => (
@@ -380,10 +404,9 @@ const Index = () => {
         </div>
       </section>
 
-      {/* FAQ Section */}
       <section className="container mx-auto py-20">
         <h2 className="text-4xl font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-oblivion-pink to-oblivion-purple">
-          FAQ
+          {translations[language].faqTitle}
         </h2>
         <div className="max-w-3xl mx-auto">
           {translations[language].faq.map((item, index) => (
@@ -401,7 +424,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Social Links */}
       <footer className="container mx-auto py-10 text-center">
         <div className="flex justify-center space-x-6">
           <motion.a
