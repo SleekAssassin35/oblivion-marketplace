@@ -234,7 +234,7 @@ const Index = () => {
           </motion.a>
           <motion.a
             whileHover={{ scale: 1.1 }}
-            href="YOUR_SKYPE_URL"
+            href="#support"
             className="text-gray-400 hover:text-oblivion-purple transition-colors"
           >
             <MessageCircle className="w-6 h-6" />
