@@ -330,6 +330,29 @@ const Index = () => {
         </motion.div>
       </section>
 
+      {/* Features Section */}
+      <section className="container mx-auto py-20">
+        <div className="max-h-[600px] overflow-y-auto custom-scrollbar">
+          <div className="grid md:grid-cols-3 gap-8 p-4">
+            {translations[language].features.map((feature, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="glass-morphism p-6 rounded-xl hover:border-oblivion-pink/40 transition-all duration-300"
+              >
+                <div className="text-4xl mb-4">{feature.icon}</div>
+                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                <p className="text-gray-400">
+                  {feature.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Reviews Section */}
       <section className="container mx-auto py-20">
         <h2 className="text-4xl font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-oblivion-pink to-oblivion-purple">
@@ -375,29 +398,6 @@ const Index = () => {
               <p className="text-gray-300">{item.answer}</p>
             </motion.div>
           ))}
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="container mx-auto py-20">
-        <div className="max-h-[600px] overflow-y-auto custom-scrollbar">
-          <div className="grid md:grid-cols-3 gap-8 p-4">
-            {translations[language].features.map((feature, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="glass-morphism p-6 rounded-xl hover:border-oblivion-pink/40 transition-all duration-300"
-              >
-                <div className="text-4xl mb-4">{feature.icon}</div>
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-gray-400">
-                  {feature.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
 
