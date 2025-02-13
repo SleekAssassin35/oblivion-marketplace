@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import USDTPayment from "./pages/USDTPayment";
+import Metrics from "./pages/Metrics";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/payment/usdt" element={<USDTPayment />} />
+          <Route path="/metrics" element={<Metrics />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
@@ -27,4 +29,3 @@ const App = () => (
 );
 
 export default App;
-
