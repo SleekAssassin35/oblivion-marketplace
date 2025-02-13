@@ -158,7 +158,7 @@ const Index = () => {
               {translations[language].buyButton}
             </Button>
             <Button 
-              onClick={() => window.open("YOUR_YOUTUBE_URL", "_blank")}
+              onClick={() => window.open("https://www.youtube.com/live/aAvT_4XArs8", "_blank")}
               className="bg-gradient-to-r from-oblivion-purple to-oblivion-lightPink hover:opacity-90 transition-all duration-300 transform hover:scale-105"
             >
               {translations[language].watchLive}
@@ -177,7 +177,7 @@ const Index = () => {
         >
           <iframe
             className="w-full h-full rounded-lg"
-            src="YOUR_YOUTUBE_EMBED_URL"
+            src="https://www.youtube.com/live/aAvT_4XArs8"
             title="Oblivion Algo Trading"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
@@ -241,7 +241,7 @@ const Index = () => {
           </motion.a>
           <motion.a
             whileHover={{ scale: 1.1 }}
-            href="YOUR_YOUTUBE_URL"
+            href="https://www.youtube.com/live/aAvT_4XArs8"
             className="text-gray-400 hover:text-oblivion-pink transition-colors"
           >
             <Youtube className="w-6 h-6" />
