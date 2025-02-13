@@ -158,7 +158,7 @@ const Index = () => {
               {translations[language].buyButton}
             </Button>
             <Button 
-              onClick={() => window.open("https://www.youtube.com/watch?v=_-em-MKfx70&ab_channel=YorumlarlaT%C3%BCrkiye", "_blank")}
+              onClick={() => window.open("https://www.youtube.com/watch?v=aAvT_4XArs8&t=2s", "_blank")}
               className="bg-gradient-to-r from-oblivion-purple to-oblivion-lightPink hover:opacity-90 transition-all duration-300 transform hover:scale-105"
             >
               {translations[language].watchLive}
@@ -177,7 +177,7 @@ const Index = () => {
         >
           <iframe
             className="w-full h-full rounded-lg"
-            src="https://www.youtube.com/live/aAvT_4XArs8"
+            src="https://www.youtube.com/watch?v=_-em-MKfx70&ab_channel=YorumlarlaT%C3%BCrkiye"
             title="Oblivion Algo Trading"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
