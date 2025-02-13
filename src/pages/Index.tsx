@@ -158,7 +158,7 @@ const Index = () => {
               {translations[language].buyButton}
             </Button>
             <Button 
-              onClick={() => window.open("https://www.youtube.com/live/aAvT_4XArs8", "_blank")}
+              onClick={() => window.open("https://www.youtube.com/watch?v=_-em-MKfx70&ab_channel=YorumlarlaT%C3%BCrkiye", "_blank")}
               className="bg-gradient-to-r from-oblivion-purple to-oblivion-lightPink hover:opacity-90 transition-all duration-300 transform hover:scale-105"
             >
               {translations[language].watchLive}
