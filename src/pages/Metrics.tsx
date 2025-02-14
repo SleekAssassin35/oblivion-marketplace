@@ -12,7 +12,9 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer
+  ResponsiveContainer,
+  BarChart,
+  Bar
 } from "recharts";
 
 interface CryptoData {
@@ -23,11 +25,23 @@ interface CryptoData {
   timestamp: string;
 }
 
+interface LiquidationData {
+  timestamp: string;
+  amount: number;
+  type: "long" | "short";
+}
+
+interface OrderBookData {
+  price: number;
+  quantity: number;
+  type: "buy" | "sell";
+}
+
 const Metrics = () => {
   const navigate = useNavigate();
   const [timeRange] = useState("24h");
 
-  const { data: cryptoData, isLoading } = useQuery({
+  const { data: cryptoData, isLoading: priceLoading } = useQuery({
     queryKey: ["cryptoMetrics", timeRange],
     queryFn: async () => {
       const response = await fetch(
@@ -43,7 +57,54 @@ const Metrics = () => {
         timestamp: new Date().toISOString(),
       }));
     },
-    refetchInterval: 30000, // Her 30 saniyede bir güncelle
+    refetchInterval: 30000,
+  });
+
+  const { data: fearGreedIndex } = useQuery({
+    queryKey: ["fearGreedIndex"],
+    queryFn: async () => {
+      const response = await fetch(
+        "https://api.alternative.me/fng/"
+      );
+      const data = await response.json();
+      return data.data[0];
+    },
+    refetchInterval: 300000,
+  });
+
+  const { data: liquidations } = useQuery({
+    queryKey: ["liquidations"],
+    queryFn: async () => {
+      const response = await fetch(
+        "https://api.coinglass.com/api/futures/liquidation/detail?symbol=BTC"
+      );
+      const data = await response.json();
+      return data.data.slice(0, 10);
+    },
+    refetchInterval: 60000,
+  });
+
+  const { data: orderBook } = useQuery({
+    queryKey: ["orderBook"],
+    queryFn: async () => {
+      const response = await fetch(
+        "https://api.binance.com/api/v3/depth?symbol=BTCUSDT&limit=10"
+      );
+      const data = await response.json();
+      return {
+        bids: data.bids.map(([price, qty]: [string, string]) => ({
+          price: parseFloat(price),
+          quantity: parseFloat(qty),
+          type: "buy" as const,
+        })),
+        asks: data.asks.map(([price, qty]: [string, string]) => ({
+          price: parseFloat(price),
+          quantity: parseFloat(qty),
+          type: "sell" as const,
+        })),
+      };
+    },
+    refetchInterval: 5000,
   });
 
   return (
@@ -66,7 +127,7 @@ const Metrics = () => {
           Crypto Metrics
         </h1>
 
-        {isLoading ? (
+        {priceLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className="h-32 bg-gray-800/50 rounded-lg animate-pulse" />
@@ -107,6 +168,86 @@ const Metrics = () => {
                   </div>
                 </motion.div>
               ))}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              {/* Fear & Greed Index */}
+              <motion.div
+                className="glass-morphism p-6 rounded-xl"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.2 }}
+              >
+                <h3 className="text-xl font-semibold mb-4 text-oblivion-pink">
+                  Fear & Greed Index
+                </h3>
+                <div className="flex items-center justify-center">
+                  <div className="text-6xl font-bold text-center">
+                    {fearGreedIndex?.value}
+                  </div>
+                  <div className="ml-4 text-gray-400">
+                    <p>{fearGreedIndex?.value_classification}</p>
+                    <p className="text-sm">Updated: {fearGreedIndex?.timestamp}</p>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Bitcoin Liquidations */}
+              <motion.div
+                className="glass-morphism p-6 rounded-xl"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.2 }}
+              >
+                <h3 className="text-xl font-semibold mb-4 text-oblivion-pink">
+                  Recent Liquidations
+                </h3>
+                <div className="h-[200px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={liquidations}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#444" />
+                      <XAxis dataKey="timestamp" stroke="#888" />
+                      <YAxis stroke="#888" />
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: "rgba(0, 0, 0, 0.8)",
+                          border: "1px solid #666",
+                        }}
+                      />
+                      <Bar dataKey="amount" fill="#FF69B4" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Order Book */}
+            <div className="glass-morphism p-6 rounded-xl mb-8">
+              <h3 className="text-xl font-semibold mb-4 text-oblivion-pink">
+                BTC/USDT Order Book
+              </h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <h4 className="text-green-500 mb-2">Buy Orders</h4>
+                  <div className="space-y-1">
+                    {orderBook?.bids.map((order: OrderBookData, index: number) => (
+                      <div key={index} className="flex justify-between text-sm">
+                        <span className="text-green-400">${order.price.toLocaleString()}</span>
+                        <span className="text-gray-400">{order.quantity.toFixed(4)} BTC</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h4 className="text-red-500 mb-2">Sell Orders</h4>
+                  <div className="space-y-1">
+                    {orderBook?.asks.map((order: OrderBookData, index: number) => (
+                      <div key={index} className="flex justify-between text-sm">
+                        <span className="text-red-400">${order.price.toLocaleString()}</span>
+                        <span className="text-gray-400">{order.quantity.toFixed(4)} BTC</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="glass-morphism p-6 rounded-xl">
