@@ -52,17 +52,17 @@ const USDTPayment = () => {
               <div className="relative">
                 <div className="p-4 rounded-lg bg-black border border-oblivion-pink/10">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-300">USDT Wallet Address:</span>
+                    <span className="text-gray-300">USDT Wallet Address(TRC20 TRON):</span>
                     <Button
                       variant="ghost"
                       size="sm"
                       className="text-oblivion-pink hover:text-oblivion-purple"
-                      onClick={() => handleCopy("YOUR_USDT_WALLET_ADDRESS")}
+                      onClick={() => handleCopy("TTR2dAxaQNBkBFiVf7ZAo5e5Y6BfU2K8en")}
                     >
                       <CopyIcon className="h-4 w-4" />
                     </Button>
                   </div>
-                  <p className="mt-2 text-sm font-mono">YOUR_USDT_WALLET_ADDRESS</p>
+                  <p className="mt-2 text-sm font-mono">TTR2dAxaQNBkBFiVf7ZAo5e5Y6BfU2K8en</p>
                 </div>
               </div>
             </CardContent>
@@ -77,10 +77,10 @@ const USDTPayment = () => {
             <CardContent className="space-y-4">
               <ol className="list-decimal list-inside space-y-2 text-gray-300">
                 <li>Ödemenizi yukarıdaki USDT adresine gönderin</li>
-                <li>İşlem hash'ini kaydedin</li>
+                <li>İşlem Ekran resmini kaydedin</li>
                 <li>Ödeme onayı için Telegram kanalımıza katılın</li>
-                <li>Hash bilgisini destek ekibimize iletin</li>
-                <li>Ürün erişimi 24 saat içinde sağlanacaktır</li>
+                <li>Ekran resmini destek ekibimize iletin</li>
+                <li>Ürün erişimi 12 saat içinde sağlanacaktır</li>
               </ol>
             </CardContent>
           </Card>
@@ -95,19 +95,19 @@ const USDTPayment = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 rounded-lg bg-black border border-oblivion-pink/10">
                   <h3 className="font-semibold mb-2 text-oblivion-pink">Telegram</h3>
-                  <p className="text-sm text-gray-300">@your_telegram</p>
+                  <p className="text-sm text-gray-300">EKLENECEK</p>
                 </div>
                 <div className="p-4 rounded-lg bg-black border border-oblivion-pink/10">
                   <h3 className="font-semibold mb-2 text-oblivion-pink">Discord</h3>
-                  <p className="text-sm text-gray-300">your_discord</p>
+                  <p className="text-sm text-gray-300">EKLENECEK</p>
                 </div>
                 <div className="p-4 rounded-lg bg-black border border-oblivion-pink/10">
                   <h3 className="font-semibold mb-2 text-oblivion-pink">Skype</h3>
-                  <p className="text-sm text-gray-300">your_skype</p>
+                  <p className="text-sm text-gray-300">EKLENECEK</p>
                 </div>
                 <div className="p-4 rounded-lg bg-black border border-oblivion-pink/10">
                   <h3 className="font-semibold mb-2 text-oblivion-pink">YouTube</h3>
-                  <p className="text-sm text-gray-300">your_youtube</p>
+                  <p className="text-sm text-gray-300">EKLENECEK</p>
                 </div>
               </div>
             </CardContent>
