@@ -127,7 +127,7 @@ const Metrics = () => {
     queryKey: ["orderBook"],
     queryFn: async () => {
       const response = await fetch(
-        "https://api.binance.com/api/v3/depth?symbol=BTCUSDT&limit=500"
+        "https://api.binance.com/api/v3/depth?symbol=BTCUSDT&limit=1000"
       );
       const data = await response.json();
       
@@ -137,7 +137,11 @@ const Metrics = () => {
             price: parseFloat(price),
             quantity: parseFloat(qty),
           }))
-          .filter(order => order.price >= 60000 && order.price <= 150000);
+          .filter(order => 
+            order.price >= 60000 && 
+            order.price <= 150000 &&
+            order.quantity >= 5
+          );
 
       return {
         bids: filterOrders(data.bids).map(order => ({ ...order, type: "buy" as const })),
