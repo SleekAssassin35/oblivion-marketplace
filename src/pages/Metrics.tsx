@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -311,7 +310,7 @@ const Metrics = () => {
             {/* Order Book */}
             <div className="glass-morphism p-6 rounded-xl mb-8">
               <h3 className="text-xl font-semibold mb-4 text-oblivion-pink">
-                BTC/USDT Order Book (>10 BTC)
+                BTC/USDT Order Book ({'>'}10 BTC)
               </h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
