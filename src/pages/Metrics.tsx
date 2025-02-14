@@ -39,6 +39,29 @@ interface OrderBookData {
   type: "buy" | "sell";
 }
 
+const Metrics = () => {
+  const navigate = useNavigate();
+  const [timeRange] = useState("24h");
+
+  const { data: cryptoData, isLoading: priceLoading } = useQuery({
+    queryKey: ["cryptoMetrics", timeRange],
+    queryFn: async () => {
+      const response = await fetch(
+        "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tron,binancecoin&vs_currencies=usd&include_24hr_vol=true&include_market_cap=true"
+      );
+      const data = await response.json();
+      
+      return Object.entries(data).map(([key, value]: [string, any]) => ({
+        symbol: key.toUpperCase(),
+        price: value.usd,
+        volume_24h: value.usd_24h_vol,
+        market_cap: value.usd_market_cap,
+        timestamp: new Date().toISOString(),
+      }));
+    },
+    refetchInterval: 30000,
+  });
+
   const { data: totalMarketData } = useQuery({
     queryKey: ["totalMarket"],
     queryFn: async () => {
@@ -115,6 +138,8 @@ interface OrderBookData {
             quantity: parseFloat(qty),
           }))
           .filter(order => 
+            order.price >= 60000 && 
+            order.price <= 150000 &&
             order.quantity >= 5
           );
 
