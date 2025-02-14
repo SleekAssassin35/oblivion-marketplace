@@ -14,7 +14,9 @@ import {
   Tooltip,
   ResponsiveContainer,
   BarChart,
-  Bar
+  Bar,
+  AreaChart,
+  Area
 } from "recharts";
 
 interface CryptoData {
@@ -60,14 +62,34 @@ const Metrics = () => {
     refetchInterval: 30000,
   });
 
-  const { data: fearGreedIndex } = useQuery({
-    queryKey: ["fearGreedIndex"],
+  const { data: totalMarketData } = useQuery({
+    queryKey: ["totalMarket"],
     queryFn: async () => {
       const response = await fetch(
-        "https://api.alternative.me/fng/"
+        "https://api.coingecko.com/api/v3/global"
       );
       const data = await response.json();
-      return data.data[0];
+      return {
+        total1: data.data.total_market_cap.usd,
+        total2: data.data.total_volume.usd,
+        total3: data.data.market_cap_percentage.btc,
+        others: 100 - data.data.market_cap_percentage.btc - data.data.market_cap_percentage.eth
+      };
+    },
+    refetchInterval: 30000,
+  });
+
+  const { data: fearGreedIndexHistory } = useQuery({
+    queryKey: ["fearGreedIndexHistory"],
+    queryFn: async () => {
+      const response = await fetch(
+        "https://api.alternative.me/fng/?limit=30"
+      );
+      const data = await response.json();
+      return data.data.map((item: any) => ({
+        value: parseInt(item.value),
+        timestamp: new Date(item.timestamp * 1000).toLocaleDateString()
+      })).reverse();
     },
     refetchInterval: 300000,
   });
@@ -79,7 +101,11 @@ const Metrics = () => {
         "https://api.coinglass.com/api/futures/liquidation/detail?symbol=BTC"
       );
       const data = await response.json();
-      return data.data.slice(0, 10);
+      return data.data.slice(0, 10).map((item: any) => ({
+        timestamp: new Date(item.timestamp).toLocaleTimeString(),
+        amount: item.amount,
+        type: item.type
+      }));
     },
     refetchInterval: 60000,
   });
@@ -88,20 +114,21 @@ const Metrics = () => {
     queryKey: ["orderBook"],
     queryFn: async () => {
       const response = await fetch(
-        "https://api.binance.com/api/v3/depth?symbol=BTCUSDT&limit=10"
+        "https://api.binance.com/api/v3/depth?symbol=BTCUSDT&limit=100"
       );
       const data = await response.json();
+      
+      const filterLargeOrders = (orders: [string, string][]) =>
+        orders
+          .map(([price, qty]: [string, string]) => ({
+            price: parseFloat(price),
+            quantity: parseFloat(qty),
+          }))
+          .filter(order => order.quantity >= 10);
+
       return {
-        bids: data.bids.map(([price, qty]: [string, string]) => ({
-          price: parseFloat(price),
-          quantity: parseFloat(qty),
-          type: "buy" as const,
-        })),
-        asks: data.asks.map(([price, qty]: [string, string]) => ({
-          price: parseFloat(price),
-          quantity: parseFloat(qty),
-          type: "sell" as const,
-        })),
+        bids: filterLargeOrders(data.bids).map(order => ({ ...order, type: "buy" as const })),
+        asks: filterLargeOrders(data.asks).map(order => ({ ...order, type: "sell" as const })),
       };
     },
     refetchInterval: 5000,
@@ -171,7 +198,7 @@ const Metrics = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              {/* Fear & Greed Index */}
+              {/* Fear & Greed Index with Graph */}
               <motion.div
                 className="glass-morphism p-6 rounded-xl"
                 whileHover={{ scale: 1.02 }}
@@ -180,18 +207,37 @@ const Metrics = () => {
                 <h3 className="text-xl font-semibold mb-4 text-oblivion-pink">
                   Fear & Greed Index
                 </h3>
-                <div className="flex items-center justify-center">
-                  <div className="text-6xl font-bold text-center">
-                    {fearGreedIndex?.value}
-                  </div>
-                  <div className="ml-4 text-gray-400">
-                    <p>{fearGreedIndex?.value_classification}</p>
-                    <p className="text-sm">Updated: {fearGreedIndex?.timestamp}</p>
-                  </div>
+                <div className="h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={fearGreedIndexHistory}>
+                      <defs>
+                        <linearGradient id="fearGreedGradient" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#FF69B4" stopOpacity={0.8}/>
+                          <stop offset="95%" stopColor="#FF69B4" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#444" />
+                      <XAxis dataKey="timestamp" stroke="#888" />
+                      <YAxis stroke="#888" domain={[0, 100]} />
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: "rgba(0, 0, 0, 0.8)",
+                          border: "1px solid #666",
+                        }}
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="value"
+                        stroke="#FF69B4"
+                        fillOpacity={1}
+                        fill="url(#fearGreedGradient)"
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
                 </div>
               </motion.div>
 
-              {/* Bitcoin Liquidations */}
+              {/* Recent Liquidations */}
               <motion.div
                 className="glass-morphism p-6 rounded-xl"
                 whileHover={{ scale: 1.02 }}
@@ -200,7 +246,7 @@ const Metrics = () => {
                 <h3 className="text-xl font-semibold mb-4 text-oblivion-pink">
                   Recent Liquidations
                 </h3>
-                <div className="h-[200px]">
+                <div className="h-[300px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={liquidations}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#444" />
@@ -219,10 +265,53 @@ const Metrics = () => {
               </motion.div>
             </div>
 
+            {/* Market Totals */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+              <motion.div
+                className="glass-morphism p-6 rounded-xl"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.2 }}
+              >
+                <h3 className="text-xl font-semibold mb-2 text-oblivion-pink">TOTAL1</h3>
+                <p className="text-2xl font-bold">${totalMarketData?.total1?.toLocaleString()}</p>
+                <p className="text-sm text-gray-400">Total Market Cap</p>
+              </motion.div>
+
+              <motion.div
+                className="glass-morphism p-6 rounded-xl"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.2 }}
+              >
+                <h3 className="text-xl font-semibold mb-2 text-oblivion-pink">TOTAL2</h3>
+                <p className="text-2xl font-bold">${totalMarketData?.total2?.toLocaleString()}</p>
+                <p className="text-sm text-gray-400">Total Volume</p>
+              </motion.div>
+
+              <motion.div
+                className="glass-morphism p-6 rounded-xl"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.2 }}
+              >
+                <h3 className="text-xl font-semibold mb-2 text-oblivion-pink">TOTAL3</h3>
+                <p className="text-2xl font-bold">{totalMarketData?.total3?.toFixed(2)}%</p>
+                <p className="text-sm text-gray-400">BTC Dominance</p>
+              </motion.div>
+
+              <motion.div
+                className="glass-morphism p-6 rounded-xl"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.2 }}
+              >
+                <h3 className="text-xl font-semibold mb-2 text-oblivion-pink">OTHERS</h3>
+                <p className="text-2xl font-bold">{totalMarketData?.others?.toFixed(2)}%</p>
+                <p className="text-sm text-gray-400">Other Coins</p>
+              </motion.div>
+            </div>
+
             {/* Order Book */}
             <div className="glass-morphism p-6 rounded-xl mb-8">
               <h3 className="text-xl font-semibold mb-4 text-oblivion-pink">
-                BTC/USDT Order Book
+                BTC/USDT Order Book (>10 BTC)
               </h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -247,41 +336,6 @@ const Metrics = () => {
                     ))}
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <div className="glass-morphism p-6 rounded-xl">
-              <h2 className="text-2xl font-semibold mb-4 text-oblivion-pink">
-                Price Chart
-              </h2>
-              <div className="h-[400px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart
-                    data={cryptoData}
-                    margin={{
-                      top: 5,
-                      right: 30,
-                      left: 20,
-                      bottom: 5,
-                    }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" stroke="#444" />
-                    <XAxis dataKey="symbol" stroke="#888" />
-                    <YAxis stroke="#888" />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: "rgba(0, 0, 0, 0.8)",
-                        border: "1px solid #666",
-                      }}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="price"
-                      stroke="#FF69B4"
-                      strokeWidth={2}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
               </div>
             </div>
           </>
