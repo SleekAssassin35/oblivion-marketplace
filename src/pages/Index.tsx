@@ -15,6 +15,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import CryptoAIChat from "@/components/CryptoAIChat";
 
 const Index = () => {
   const [language, setLanguage] = useState<"tr" | "en" | "es">("tr");
@@ -421,6 +422,15 @@ const Index = () => {
               <p className="text-gray-300">{item.answer}</p>
             </motion.div>
           ))}
+        </div>
+      </section>
+
+      <section className="container mx-auto py-20">
+        <h2 className="text-4xl font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-oblivion-pink to-oblivion-purple">
+          Kripto AI Asistan
+        </h2>
+        <div className="max-w-3xl mx-auto">
+          <CryptoAIChat />
         </div>
       </section>
 
