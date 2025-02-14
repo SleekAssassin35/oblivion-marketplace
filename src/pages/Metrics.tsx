@@ -138,8 +138,6 @@ const Metrics = () => {
             quantity: parseFloat(qty),
           }))
           .filter(order => 
-            order.price >= 60000 && 
-            order.price <= 150000 &&
             order.quantity >= 5
           );
 
