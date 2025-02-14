@@ -70,7 +70,7 @@ const Metrics = () => {
       const data = await response.json();
       return {
         total1: data.data.total_market_cap.usd,
-        total2: data.data.total_volume.usd,
+        total2: data.data.market_cap_percentage.usdt || 0,
         total3: data.data.market_cap_percentage.btc,
         others: 100 - data.data.market_cap_percentage.btc - data.data.market_cap_percentage.eth
       };
@@ -113,21 +113,21 @@ const Metrics = () => {
     queryKey: ["orderBook"],
     queryFn: async () => {
       const response = await fetch(
-        "https://api.binance.com/api/v3/depth?symbol=BTCUSDT&limit=100"
+        "https://api.binance.com/api/v3/depth?symbol=BTCUSDT&limit=500"
       );
       const data = await response.json();
       
-      const filterLargeOrders = (orders: [string, string][]) =>
+      const filterOrders = (orders: [string, string][]) =>
         orders
           .map(([price, qty]: [string, string]) => ({
             price: parseFloat(price),
             quantity: parseFloat(qty),
           }))
-          .filter(order => order.quantity >= 10);
+          .filter(order => order.price >= 60000 && order.price <= 150000);
 
       return {
-        bids: filterLargeOrders(data.bids).map(order => ({ ...order, type: "buy" as const })),
-        asks: filterLargeOrders(data.asks).map(order => ({ ...order, type: "sell" as const })),
+        bids: filterOrders(data.bids).map(order => ({ ...order, type: "buy" as const })),
+        asks: filterOrders(data.asks).map(order => ({ ...order, type: "sell" as const })),
       };
     },
     refetchInterval: 5000,
@@ -281,9 +281,9 @@ const Metrics = () => {
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.2 }}
               >
-                <h3 className="text-xl font-semibold mb-2 text-oblivion-pink">TOTAL2</h3>
-                <p className="text-2xl font-bold">${totalMarketData?.total2?.toLocaleString()}</p>
-                <p className="text-sm text-gray-400">Total Volume</p>
+                <h3 className="text-xl font-semibold mb-2 text-oblivion-pink">USDT Dominance</h3>
+                <p className="text-2xl font-bold">{totalMarketData?.total2?.toFixed(2)}%</p>
+                <p className="text-sm text-gray-400">USDT Market Share</p>
               </motion.div>
 
               <motion.div
@@ -291,9 +291,9 @@ const Metrics = () => {
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.2 }}
               >
-                <h3 className="text-xl font-semibold mb-2 text-oblivion-pink">TOTAL3</h3>
+                <h3 className="text-xl font-semibold mb-2 text-oblivion-pink">BTC Dominance</h3>
                 <p className="text-2xl font-bold">{totalMarketData?.total3?.toFixed(2)}%</p>
-                <p className="text-sm text-gray-400">BTC Dominance</p>
+                <p className="text-sm text-gray-400">BTC Market Share</p>
               </motion.div>
 
               <motion.div
@@ -310,7 +310,7 @@ const Metrics = () => {
             {/* Order Book */}
             <div className="glass-morphism p-6 rounded-xl mb-8">
               <h3 className="text-xl font-semibold mb-4 text-oblivion-pink">
-                BTC/USDT Order Book ({'>'}10 BTC)
+                BTC/USDT Order Book ($60,000 - $150,000)
               </h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
