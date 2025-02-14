@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/components/ui/use-toast";
 import { ArrowUpIcon } from "lucide-react";
@@ -24,7 +23,7 @@ const CryptoAIChat = () => {
     e.preventDefault();
     if (!input.trim()) return;
 
-    const userMessage = { role: 'user', content: input };
+    const userMessage: Message = { role: 'user', content: input };
     setMessages(prev => [...prev, userMessage]);
     setInput("");
     setIsLoading(true);
@@ -50,7 +49,10 @@ const CryptoAIChat = () => {
       });
 
       const data = await response.json();
-      const aiResponse = { role: 'assistant', content: data.choices[0].message.content };
+      const aiResponse: Message = { 
+        role: 'assistant', 
+        content: data.choices[0].message.content 
+      };
       setMessages(prev => [...prev, aiResponse]);
     } catch (error) {
       toast({
