@@ -9,14 +9,21 @@ import NotFound from "./pages/NotFound";
 import USDTPayment from "./pages/USDTPayment";
 import Metrics from "./pages/Metrics";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      <BrowserRouter basename="/">
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/payment/usdt" element={<USDTPayment />} />
