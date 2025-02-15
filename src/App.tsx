@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import USDTPayment from "./pages/USDTPayment";
 import Metrics from "./pages/Metrics";
+import Analysis from "./pages/Analysis";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/payment/usdt" element={<USDTPayment />} />
           <Route path="/metrics" element={<Metrics />} />
+          <Route path="/analysis" element={<Analysis />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
