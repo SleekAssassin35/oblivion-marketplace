@@ -29,14 +29,13 @@ const CryptoAIChat = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      const response = await fetch('https://aimlapi.com/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+          'Authorization': 'Bearer 5dd898612a2d42c1a47943c23a19cda7'
         },
         body: JSON.stringify({
-          model: "gpt-4o-mini",
           messages: [
             {
               role: "system",
@@ -48,6 +47,10 @@ const CryptoAIChat = () => {
         })
       });
 
+      if (!response.ok) {
+        throw new Error('API yanıt vermedi');
+      }
+
       const data = await response.json();
       const aiResponse: Message = { 
         role: 'assistant', 
@@ -55,6 +58,7 @@ const CryptoAIChat = () => {
       };
       setMessages(prev => [...prev, aiResponse]);
     } catch (error) {
+      console.error('AI API Hatası:', error);
       toast({
         title: "Hata",
         description: "Bir hata oluştu. Lütfen tekrar deneyin.",
