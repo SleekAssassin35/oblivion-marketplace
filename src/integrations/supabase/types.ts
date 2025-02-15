@@ -9,6 +9,59 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      crypto_analyses: {
+        Row: {
+          author_id: string
+          coin_type: string
+          content: string
+          created_at: string
+          id: string
+          image_url: string | null
+          others: number | null
+          total: number | null
+          total1: number | null
+          total2: number | null
+          total3: number | null
+          updated_at: string
+        }
+        Insert: {
+          author_id: string
+          coin_type: string
+          content: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          others?: number | null
+          total?: number | null
+          total1?: number | null
+          total2?: number | null
+          total3?: number | null
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string
+          coin_type?: string
+          content?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          others?: number | null
+          total?: number | null
+          total1?: number | null
+          total2?: number | null
+          total3?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crypto_analyses_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       discussions: {
         Row: {
           content: string | null
@@ -30,6 +83,30 @@ export type Database = {
           id?: string
           tittle?: string | null
           user?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          id: string
+          is_admin: boolean | null
+          updated_at: string
+          username: string | null
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          is_admin?: boolean | null
+          updated_at?: string
+          username?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_admin?: boolean | null
+          updated_at?: string
+          username?: string | null
         }
         Relationships: []
       }
