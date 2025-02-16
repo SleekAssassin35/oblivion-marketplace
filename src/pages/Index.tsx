@@ -348,6 +348,12 @@ const Index = () => {
               {translations[language].buyButton}
             </Button>
             <Button 
+              onClick={() => navigate("/analysis")}
+              className="bg-gradient-to-r from-oblivion-purple to-oblivion-lightPink hover:opacity-90 transition-all duration-300 transform hover:scale-105"
+            >
+              {language === 'tr' ? 'Günlük Analiz' : language === 'es' ? 'Análisis Diario' : 'Daily Analysis'}
+            </Button>
+            <Button 
               onClick={() => window.open("https://www.youtube.com/watch?v=aAvT_4XArs8&t=2s", "_blank")}
               className="bg-gradient-to-r from-oblivion-purple to-oblivion-lightPink hover:opacity-90 transition-all duration-300 transform hover:scale-105"
             >
