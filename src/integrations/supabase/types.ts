@@ -9,6 +9,67 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      analysis_likes: {
+        Row: {
+          analysis_id: string
+          created_at: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          analysis_id: string
+          created_at?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          analysis_id?: string
+          created_at?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "analysis_likes_analysis_id_fkey"
+            columns: ["analysis_id"]
+            isOneToOne: false
+            referencedRelation: "crypto_analyses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      analysis_questions: {
+        Row: {
+          analysis_id: string
+          created_at: string | null
+          id: string
+          question: string
+          user_id: string
+        }
+        Insert: {
+          analysis_id: string
+          created_at?: string | null
+          id?: string
+          question: string
+          user_id: string
+        }
+        Update: {
+          analysis_id?: string
+          created_at?: string | null
+          id?: string
+          question?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "analysis_questions_analysis_id_fkey"
+            columns: ["analysis_id"]
+            isOneToOne: false
+            referencedRelation: "crypto_analyses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       crypto_analyses: {
         Row: {
           author_id: string
