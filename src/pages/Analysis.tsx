@@ -63,22 +63,38 @@ const Analysis = () => {
   });
 
   useEffect(() => {
-    fetchAnalyses();
-    checkAuthStatus();
+    checkAuthAndFetchData();
   }, []);
 
-  const checkAuthStatus = async () => {
+  const checkAuthAndFetchData = async () => {
     const { data: { session } } = await supabase.auth.getSession();
     setIsAuthenticated(!!session?.user);
+
     if (session?.user) {
       const { data: profile } = await supabase
         .from('profiles')
         .select('is_admin')
         .eq('id', session.user.id)
         .single();
-      
-      setIsAdmin(profile?.is_admin || false);
+
+      const isUserAdmin = !!profile?.is_admin;
+      setIsAdmin(isUserAdmin);
+
+      if (!isUserAdmin) {
+        toast({
+          title: "Erişim Reddedildi",
+          description: "Bu alana sadece yöneticiler erişebilir.",
+          variant: "destructive",
+        });
+        navigate("/admin");
+        return;
+      }
+    } else {
+      navigate("/admin");
+      return;
     }
+
+    fetchAnalyses();
   };
 
   const fetchAnalyses = async () => {

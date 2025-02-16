@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,15 +12,34 @@ const AdminLogin = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  const checkAuth = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session?.user) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('is_admin')
+        .eq('id', session.user.id)
+        .single();
+
+      if (profile?.is_admin) {
+        navigate("/analysis");
+      }
+    }
+  };
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data: { session }, error: signInError } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
-    if (error) {
+    if (signInError) {
       toast({
         title: "Hata",
         description: "Giriş yapılamadı. Lütfen bilgilerinizi kontrol edin.",
@@ -29,13 +48,31 @@ const AdminLogin = () => {
       return;
     }
 
-    const { data: profile } = await supabase
+    if (!session?.user) {
+      toast({
+        title: "Hata",
+        description: "Kullanıcı bulunamadı.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const { data: profile, error: profileError } = await supabase
       .from('profiles')
       .select('is_admin')
-      .eq('id', (await supabase.auth.getUser()).data.user?.id)
+      .eq('id', session.user.id)
       .single();
 
-    if (!profile?.is_admin) {
+    if (profileError || !profile) {
+      toast({
+        title: "Hata",
+        description: "Profil bilgileri alınamadı.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!profile.is_admin) {
       await supabase.auth.signOut();
       toast({
         title: "Erişim Reddedildi",
@@ -49,6 +86,7 @@ const AdminLogin = () => {
       title: "Başarılı",
       description: "Giriş başarılı, yönlendiriliyorsunuz...",
     });
+    
     navigate("/analysis");
   };
 
